@@ -1,5 +1,5 @@
 # ==============================================================================
-# Windows System Diagnostic - Internal Tool (3D Web UI Control Center v2.8)
+# Windows System Diagnostic - Internal Tool (3D Web UI Control Center v2.9)
 # ==============================================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -375,14 +375,9 @@ Write-Host " [+] 3D Web UI opened in browser automatically!" -ForegroundColor Gr
 Write-Host " [+] Control everything smoothly from the browser." -ForegroundColor Cyan
 Write-Host " [+] Press [END] or [F12] to exit." -ForegroundColor DarkGray
 
-# [6] Robust Path Resolution (Fixing PSScriptRoot empty bug)
+# [6] Bulletproof Path Resolution (Safely handling online execution & local paths)
 $scriptDir = $PSScriptRoot
-if ([string]::IsNullOrEmpty($scriptDir)) {
-    if ($MyInvocation.MyCommand.Definition) {
-        $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-    }
-}
-if ([string]::IsNullOrEmpty($scriptDir)) {
+if ([string]::IsNullOrEmpty($scriptDir) -or $scriptDir -match "http|irm") {
     $scriptDir = (Get-Location).Path
 }
 
